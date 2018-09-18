@@ -1,0 +1,67 @@
+/** PART I **/
+/*a. */
+ 
+-- Create and load a database for tables R and S,
+CREATE TABLE R(
+    thePrimaryKey INTEGER PRIMARY KEY,
+    name VARCHAR(255),
+    joinKey1 INTEGER
+);
+
+CREATE TABLE S(
+    thePrimaryKey INTEGER PRIMARY KEY,
+    romanNumeral VARCHAR(255),
+    joinKey2 INTEGER
+);
+
+INSERT INTO R VALUES
+(1,"Andrea",101),
+(2,"David",NULL),
+(3,"David",NULL),
+(4,"Dan",NULL),
+(5,"John",106);
+
+INSERT INTO S VALUES
+(6,"V",101),
+(7,"X",NULL),
+(8,"L",105);
+
+/* Part b */
+/* TODO: Add results*/
+
+-- 1
+SELECT * FROM R WHERE joinKey1=101;
+
+-- 2
+SELECT * FROM R WHERE NOT(joinKey1=101);
+
+-- 3
+SELECT * FROM R WHERE joinKey1 IS NULL;
+
+-- 4
+SELECT Name,joinKey1 FROM R;
+
+-- 5 
+SELECT joinKey1 FROM R;
+
+-- 6
+SELECT * FROM R JOIN S ON R.joinKey1=S.joinKey2;
+
+-- 7
+SELECT * FROM R JOIN S ON NOT(R.joinKey1=S.joinKey2);
+
+-- 8
+SELECT * FROM R FULL OUTER JOIN S ON R.joinKey1=S.joinKey2;
+
+/* sqlLite does not support full outer join, so I combined a left and right outer join*/
+SELECT R.thePrimaryKey,R.joinKey1,R.name,S.thePrimaryKey,S.joinKey2,S.romanNumeral 
+FROM R LEFT JOIN S ON R.joinKey1=S.joinKey2
+UNION ALL
+SELECT R.thePrimaryKey,R.joinKey1,R.name,S.thePrimaryKey,S.joinKey2,S.romanNumeral 
+FROM S LEFT JOIN R ON R.joinKey1=S.joinKey2
+WHERE R.joinKey1 IS NULL;
+
+
+-- 9
+SELECT * FROM R LEFT OUTER JOIN S ON R.joinKey1=S.joinKey2;
+
